@@ -1,0 +1,27 @@
+version: '3'
+services:
+  service:
+    image: redler:${REVISION_ID}
+    container_name: redler
+    ports:
+      - "8082:8080"
+    volumes:
+      - ${PWD:-./}:/srv
+    links:
+      - postgresql
+    environment:
+      - DB_HOST=client-postgres
+      - DB_PORT=5432
+      - DB_NAME=dbclient
+      - DB_USERNAME=admin
+      - DB_PASSWORD=example
+      - DB_SSL_ENABLED=false
+  postgresql:
+    image: postgres
+    container_name: client-postgres
+    ports:
+      - "2345:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=dbclient
